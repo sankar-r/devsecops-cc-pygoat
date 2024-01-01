@@ -10,12 +10,12 @@ jobs:
  
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4.1.1
+      uses: actions/checkout@v2
 
     - name: Setup Python
-      uses: actions/setup-python@v5.0.0
+      uses: actions/setup-python@v2
       with: 
-        python-version: 3.7.3-1
+        python-version: 3.8
 
     - name: Install Bandit
       run: pip install bandit
@@ -25,10 +25,10 @@ jobs:
       # note: report is for machine consumption for use in vuln management tools like DefectDojo
 
     - name: Upload Artifact (Bandit findings)
-      uses: actions/upload-artifact@v4.0.0
+      uses: actions/upload-artifact@v3
       if: always()
       with:
-        name: bandkt-findings
+        name: bandit-findings
         path: bandit-report.json
       
   image_scan:
@@ -48,18 +48,18 @@ jobs:
     - name: Build Docker Image
       run: docker build -f Dockerfile -t myapp:latest .
 
-    # - name: Docker Scout Scan 
-    #   run: 
-    #     curl -sSfL https://raw.githubusercontent.com/docker/scout-cli/main/install.sh -o install-scout.sh
-    #     sh install-scout.sh 
-    #     docker scout quickview
-    #     docker scout cves
+    - name: Docker Scout Scan 
+      run: 
+        curl -sSfL https://raw.githubusercontent.com/docker/scout-cli/main/install.sh -o install-scout.sh
+        sh install-scout.sh 
+        docker scout quickview
+        docker scout cves
         
-    - name: Docker Scout Scan
-      uses: docker/scout-action@v1.2.2
-      with:
-        command: quickview,cves
-        image: myapp:latest
+    # - name: Docker Scout Scan
+    #   uses: docker/scout-action@v1.2.2
+    #   with:
+    #     command: quickview,cves
+    #     image: myapp:latest
       
       
 
