@@ -32,8 +32,12 @@ jobs:
         path: bandit-report.json
       
   image_scan:
-    #docker scout - image scan using docker native tool
-    - name: Build Image and Run Image Scan
+    # docker scout - image scan using docker native tool
+    name: Build Image and Run Image Scan
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code 
       uses: actions/checkout@v4.1.1
 
     - name: Set up Docker
